@@ -5,8 +5,8 @@ type RpcResponse<T> = {
   id: string;
 };
 
-const RPC_USER = "NqoxGc4BWET15tYH47mZ3sq02YY=";
-const RPC_PASS = "0JbF48QFBzmX+nP+4W1M5oaExvc=";
+const RPC_USER = "1a6NWNQ46b3vUYU4AsWr9imDCQo=";
+const RPC_PASS = "NcmC9Y1UYzDDT1COijBL9lTnzsA=";
 
 const BASE_URL = "/abewalletmlp";
 
@@ -53,8 +53,8 @@ export async function walletIsLocked(): Promise<RPCResponse> {
   return await makeRpcCall("walletislocked");
 }
 
-export async function unlockWallet(): Promise<RPCResponse> {
-  return await makeRpcCall("walletunlock", ["Advanced@123", 600]);
+export async function unlockWallet(passHash: string): Promise<RPCResponse> {
+  return await makeRpcCall("walletunlock", [passHash, 600]);
 }
 
 export async function listUnconfirmedTxs(): Promise<RPCResponse> {
@@ -88,3 +88,7 @@ export async function getBalance(): Promise<RPCResponse> {
 export async function buildTransaction(payload: any[]): Promise<RPCResponse> {
   return await makeRpcCall("sendtoaddressesabe", [payload]);
 }
+
+export const getRawTransaction = async (txid: string) => {
+  return await makeRpcCall("getrawtransaction", [txid, 1]);
+};
