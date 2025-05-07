@@ -67,6 +67,7 @@ export const TransactionsTab = ({ walletPassword }: TransactionsTabProps) => {
                      ? "confirmed"
                      : "unknown",
                })) as TransactionWithHash[];
+            validTransactions.sort((a, b) => b.timestamp - a.timestamp);
             setTransactions(validTransactions);
          }
       } catch (error) {
@@ -95,7 +96,9 @@ export const TransactionsTab = ({ walletPassword }: TransactionsTabProps) => {
             </div>
 
             <div className="transactions-table-container">
-               {transactions.length > 0 ? (
+               {isLoading ? (
+                  <div className="loading-spinner" style={{textAlign: 'center', padding: '2rem'}}>Loading...</div>
+               ) : transactions.length > 0 ? (
                   <table className="transactions-table">
                      <thead>
                         <tr>
