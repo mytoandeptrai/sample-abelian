@@ -39,6 +39,7 @@ export const TransactionsTab = ({ walletPassword }: TransactionsTabProps) => {
          const response = await listConfirmedTxs();
          if (response?.result) {
             const txHashes = response.result;
+            console.log('🚀 ~ fetchTransactions ~ txHashes:', txHashes);
             const txDetails = await Promise.all(
                txHashes.map(async (txHash: string) => {
                   try {
@@ -53,6 +54,7 @@ export const TransactionsTab = ({ walletPassword }: TransactionsTabProps) => {
                   }
                })
             );
+            console.log('🚀 ~ fetchTransactions ~ txDetails:', txDetails);
             const validTransactions = txDetails
                .filter((tx) => tx !== null)
                .map((tx) => ({

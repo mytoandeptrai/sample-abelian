@@ -18,6 +18,7 @@ export const PasswordModal = ({ isOpen, onClose, onSuccess, setIsPasswordModalOp
     const checkWalletLock = async () => {
       try {
         const response = await walletIsLocked();
+        console.log('🚀 ~ checkWalletLock ~ response:', response);
         if (response.result === true) {
           // If wallet is locked, show modal
           onClose();

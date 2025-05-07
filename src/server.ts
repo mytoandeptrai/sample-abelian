@@ -58,7 +58,6 @@ export class AbelianAddressConverter {
       const response = await axios.post(url, data, {
         headers: { "Content-Type": "application/json" },
       });
-      console.log("longToShort Response:", response.data.payload.short_address);
       return response.data.payload.short_address;
     } catch (error: any) {
       console.error("Error in longToShort:", error.message);
@@ -77,7 +76,6 @@ export class AbelianAddressConverter {
     try {
       const response = await axios.get(url);
       const abelAddress = response.data.payload;
-      console.log("shortToLong Response:", abelAddress);
       return abelAddress;
     } catch (error: any) {
       console.error("Error in shortToLong:", error.message);
