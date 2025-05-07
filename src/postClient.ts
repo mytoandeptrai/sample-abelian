@@ -90,5 +90,5 @@ export async function buildTransaction(payload: any[]): Promise<RPCResponse> {
 }
 
 export const getRawTransaction = async (txid: string) => {
-  return await makeRpcCall("getrawtransaction", [txid, 1]);
+  return await makeRpcCall("getrawtransaction", [txid, true]);
 };

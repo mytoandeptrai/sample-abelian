@@ -1,32 +1,41 @@
 import { useState } from 'react';
 import { generateAddress } from '../postClient';
 import { AbelianAddressConverter } from '../server';
+import { toast } from 'react-toastify';
+import { useAddressContext } from './AddressContext';
 
 interface AddressTabProps {
   walletPassword: string | null;
 }
 
 export const AddressTab = ({ walletPassword }: AddressTabProps) => {
-  const [longAddress, setLongAddress] = useState('');
-  const [shortAddress, setShortAddress] = useState('');
-  const [generatedAddresses, setGeneratedAddresses] = useState<string[]>([]);
+  const {
+    longAddress,
+    setLongAddress,
+    shortAddress,
+    setShortAddress,
+    generatedAddresses,
+    setGeneratedAddresses,
+    clearAll
+  } = useAddressContext();
   const [isGenerating, setIsGenerating] = useState(false);
   const [isConverting, setIsConverting] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
 
   const handleGenerateAddress = async () => {
     if (!walletPassword) return;
-    
     try {
       setIsGenerating(true);
       const generateAddressResponse = await generateAddress();
       if (generateAddressResponse?.result) {
         const generatedAddress = generateAddressResponse.result[0]?.addr;
         setLongAddress(generatedAddress);
-        setGeneratedAddresses(prev => [...prev, generatedAddress]);
+        setGeneratedAddresses([...generatedAddresses, generatedAddress]);
+        toast.success('Address generated successfully!');
       }
     } catch (error) {
       console.error('Error generating address:', error);
+      toast.error('Failed to generate address!');
     } finally {
       setIsGenerating(false);
     }
@@ -34,13 +43,14 @@ export const AddressTab = ({ walletPassword }: AddressTabProps) => {
 
   const handleConvertAddress = async () => {
     if (!longAddress) return;
-    
     try {
       setIsConverting(true);
       const shortAddr = await AbelianAddressConverter.longToShort(longAddress);
       setShortAddress(shortAddr);
+      toast.success('Address converted successfully!');
     } catch (error) {
       console.error('Error converting address:', error);
+      toast.error('Failed to convert address!');
     } finally {
       setIsConverting(false);
     }
@@ -71,7 +81,19 @@ export const AddressTab = ({ walletPassword }: AddressTabProps) => {
           onClick={handleGenerateAddress}
           disabled={isGenerating || !walletPassword}
         >
-          {isGenerating ? 'Generating...' : 'Generate New Address'}
+          {isGenerating
+            ? 'Generating...'
+            : longAddress
+              ? 'Generate Another New Address'
+              : 'Generate New Address'}
+        </button>
+        <button
+          className="action-button"
+          style={{ marginLeft: 8 }}
+          onClick={clearAll}
+          disabled={isGenerating && isConverting}
+        >
+          Clear All
         </button>
         {longAddress && (
           <div className="result">
@@ -98,7 +120,22 @@ export const AddressTab = ({ walletPassword }: AddressTabProps) => {
             {isConverting ? 'Converting...' : 'Convert to Short'}
           </button>
           <div className="result">
-            <p>Short Address: {shortAddress || 'Not converted yet'}</p>
+            <p>
+              Short Address: {shortAddress || 'Not converted yet'}
+              {shortAddress && (
+                <button
+                  className="copy-btn"
+                  style={{ marginLeft: 8 }}
+                  onClick={async () => {
+                    await navigator.clipboard.writeText(shortAddress);
+                    toast.success('Copied short address!');
+                  }}
+                  aria-label="Copy short address"
+                >
+                  ⧉
+                </button>
+              )}
+            </p>
           </div>
         </div>
       </div>
@@ -115,7 +152,7 @@ export const AddressTab = ({ walletPassword }: AddressTabProps) => {
                   onClick={() => handleCopy(addr, index)}
                   aria-label="Copy address"
                 >
-                  {copiedIndex === index ? '✅' : '📋'}
+                  {copiedIndex === index ? '✅' : '⧉'}
                 </button>
               </li>
             ))}

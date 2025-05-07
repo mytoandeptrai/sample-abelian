@@ -98,14 +98,6 @@ export const PasswordModal = ({ isOpen, onClose, onSuccess, setIsPasswordModalOp
 
           <div className="modal-footer">
             <button 
-              type="button" 
-              onClick={onClose} 
-              disabled={isLoading}
-              className="modal-button secondary"
-            >
-              Cancel
-            </button>
-            <button 
               type="submit" 
               disabled={isLoading || !password.trim()}
               className="modal-button primary"
