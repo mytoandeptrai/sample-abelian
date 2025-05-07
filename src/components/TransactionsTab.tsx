@@ -13,12 +13,10 @@ type TransactionWithHash = {
 };
 
 const formatCurrency = (amount: number): string => {
-   return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
+   return `${amount.toLocaleString("en-US", {
       minimumFractionDigits: 7,
       maximumFractionDigits: 7,
-   }).format(amount);
+   })} ABEL`;
 };
 
 export const TransactionsTab = ({ walletPassword }: TransactionsTabProps) => {
