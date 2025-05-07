@@ -5,8 +5,8 @@ type RpcResponse<T> = {
   id: string;
 };
 
-const RPC_USER = "1a6NWNQ46b3vUYU4AsWr9imDCQo=";
-const RPC_PASS = "NcmC9Y1UYzDDT1COijBL9lTnzsA=";
+const RPC_USER = "obtYcddnEbugr2bm7j18iUsttpY=";
+const RPC_PASS = "j/6naCJqdAnpRrnSPanF3awYdcU=";
 
 const BASE_URL = "/abewalletmlp";
 

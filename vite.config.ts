@@ -10,9 +10,8 @@ export default defineConfig(() => {
       port: PORT,
       proxy: {
         '/abewalletmlp': {
-          target: 'https://127.0.0.1:18665',
+          target: 'http://127.0.0.1:18665',
           changeOrigin: true,
-          secure: false,
           rewrite: path => path.replace(/^\/abewalletmlp/, ''),
         },
       },
